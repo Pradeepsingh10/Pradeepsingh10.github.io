@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" data-theme="dark"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pradeep Singh | Portfolio</title>
+<meta name="description" content="Portfolio of Pradeep Singh: data engineering and analytics projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<div id="progress"></div>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+<nav id="nav"><div class="wrap"><a class="logo" href="#home" id="logo"></a>
+<ul><li><a href="#about">About</a></li><li><a href="#projects">Projects</a></li><li><a href="#experience">Experience</a></li><li><a href="#education">Education</a></li><li><a href="#contact">Contact</a></li><li><button id="theme" title="Toggle theme">☀</button></li></ul></div></nav>
+
+<header class="hero" id="home"><canvas id="net"></canvas>
+<div class="wrap">
+ <div class="tag"><span class="dot"></span> Open to data engineering &amp; analytics roles</div>
+ <h1>Hi, I'm <span class="grad" id="hname"></span></h1>
+ <div class="typed"><span id="typed"></span><i></i></div>
+ <p class="sub" id="hline"></p>
+ <div class="btns" id="hbtns"></div>
+</div><div class="scroll"></div></header>
+
+<section id="about"><div class="wrap">
+ <div class="eyebrow reveal">About me</div><h2 class="reveal">Turning raw data into decisions</h2>
+ <div class="about-grid">
+  <p class="about-text reveal" id="about-text"></p>
+  <div class="stats reveal"><div class="stat"><b data-to="0" id="s1">0</b><span>PROJECTS</span></div><div class="stat"><b id="s2">0</b><span>TOOLS</span></div><div class="stat"><b id="s3">0</b><span>EXPERIENCES</span></div></div>
+ </div>
+ <div class="skills" id="skills"></div>
+</div></section>
+
+<section id="projects"><div class="wrap">
+ <div class="eyebrow reveal">Work</div><h2 class="reveal">Projects</h2>
+ <div class="filters reveal" id="filters"></div><div class="projects" id="plist"></div>
+</div></section>
+
+<section id="experience"><div class="wrap">
+ <div class="eyebrow reveal">Journey</div><h2 class="reveal">Experience</h2><div class="tl" id="exp"></div>
+</div></section>
+
+<section id="education"><div class="wrap">
+ <div class="eyebrow reveal">Learning</div><h2 class="reveal">Education &amp; Certifications</h2>
+ <div class="tl" id="edu"></div><div style="height:20px"></div><ul class="certs reveal" id="certs"></ul>
+</div></section>
+
+<section id="contact" class="contact"><div class="wrap">
+ <div class="eyebrow reveal">Get in touch</div><h2 class="reveal">Let's work together</h2>
+ <a class="mail reveal" id="mail"></a><div class="btns reveal" id="cbtns"></div>
+</div></section>
+
+<footer id="foot"></footer>
+<button id="top" title="Back to top">↑</button>
+<div id="lb"><button class="prev">‹</button><img alt=""><button class="next">›</button></div>
+
+<script src="projects.js"></script>
+<script>
+const $=id=>document.getElementById(id), esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* theme */
+const root=document.documentElement;
+try{const t=localStorage.getItem("theme");if(t)root.dataset.theme=t}catch(e){}
+function setIcon(){$("theme").textContent=root.dataset.theme==="dark"?"☀":"☾"}setIcon();
+$("theme").onclick=()=>{root.dataset.theme=root.dataset.theme==="dark"?"light":"dark";try{localStorage.setItem("theme",root.dataset.theme)}catch(e){}setIcon()};
+/* content */
+document.title=PROFILE.name+" | Portfolio";
+const parts=PROFILE.name.split(" ");$("logo").innerHTML=esc(parts[0])+" <span>"+esc(parts.slice(1).join(" "))+"</span>";
+$("hname").textContent=PROFILE.name;$("hline").textContent=PROFILE.headline;$("about-text").textContent=PROFILE.about;
+$("foot").textContent="© "+new Date().getFullYear()+" "+PROFILE.name+" · Built with HTML, CSS and JavaScript";
+$("mail").textContent=PROFILE.email;$("mail").href="mailto:"+PROFILE.email;
+function links(primary){let h=primary?'<a class="btn primary" href="#projects">View Projects →</a>':'<a class="btn primary" href="mailto:'+esc(PROFILE.email)+'">Say Hello ✉</a>';
+ if(PROFILE.resume)h+=`<a class="btn" href="${esc(PROFILE.resume)}" download>Download Resume ⬇</a>`;
+ if(PROFILE.github)h+=`<a class="btn" href="${esc(PROFILE.github)}" target="_blank" rel="noopener">GitHub ↗</a>`;
+ if(PROFILE.linkedin)h+=`<a class="btn" href="${esc(PROFILE.linkedin)}" target="_blank" rel="noopener">LinkedIn ↗</a>`;return h}
+$("hbtns").innerHTML=links(true);$("cbtns").innerHTML=links(false);
+$("skills").innerHTML=SKILLS.map(g=>`<div class="card reveal"><h3>${esc(g.group)}</h3><div class="chips">${g.items.map(i=>`<span class="chip">${esc(i)}</span>`).join("")}</div></div>`).join("");
+const frames=[];
+function renderProjects(cat){frames.length=0;
+ $("plist").innerHTML=PROJECTS.filter(p=>cat==="All"||p.category===cat).map(p=>`
+ <article class="proj"><div class="shots">${p.images.map(s=>`<div class="frame"><div class="bar"><i></i><i></i><i></i></div><img src="${esc(s)}" alt="${esc(p.title)} screenshot" loading="lazy"></div>`).join("")}</div>
+ <div class="body"><div class="cat">${esc(p.category)}</div><h3>${esc(p.title)}</h3><div class="ctx">${esc(p.context)}</div>
+ <p>${esc(p.summary)}</p><ul>${p.points.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+ <div class="chips">${p.tools.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>
+ <div class="links">${p.github?`<a href="${esc(p.github)}" target="_blank" rel="noopener">Code ↗</a>`:""}${p.demo?`<a href="${esc(p.demo)}" target="_blank" rel="noopener">Live demo ↗</a>`:""}</div>
+ ${p.note?`<div class="note">${esc(p.note)}</div>`:""}</div></article>`).join("");
+ document.querySelectorAll(".proj .frame img").forEach(i=>frames.push(i.src));}
+const cats=["All",...new Set(PROJECTS.map(p=>p.category))];
+$("filters").innerHTML=cats.map((c,i)=>`<button class="${i?"":"on"}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
+$("filters").onclick=e=>{const b=e.target.closest("button");if(!b)return;[...$("filters").children].forEach(x=>x.classList.toggle("on",x===b));renderProjects(b.dataset.c)};
+renderProjects("All");
+const tl=a=>a.map(x=>`<div class="item reveal"><div class="when">${esc(x.period)}</div><h3>${esc(x.role||x.title)}</h3>${x.org||x.extra?`<div class="org">${esc(x.org||"")}${x.org&&x.extra?" | ":""}${esc(x.extra||"")}</div>`:""}${x.points?`<ul>${x.points.map(p=>`<li>${esc(p)}</li>`).join("")}</ul>`:""}</div>`).join("");
+$("exp").innerHTML=tl(EXPERIENCE);$("edu").innerHTML=tl(EDUCATION);
+$("certs").innerHTML=CERTIFICATIONS.map(c=>`<li>${esc(c)}</li>`).join("");
+/* ripple */
+document.addEventListener("click",e=>{const b=e.target.closest(".btn");if(!b)return;const r=b.getBoundingClientRect(),s=document.createElement("span");s.className="ripple";const d=Math.max(r.width,r.height);s.style.cssText=`width:${d}px;height:${d}px;left:${e.clientX-r.left-d/2}px;top:${e.clientY-r.top-d/2}px`;b.appendChild(s);setTimeout(()=>s.remove(),600)});
+/* typing */
+(function(){const el=$("typed"),w=PROFILE.roles||[];if(!w.length)return;if(reduce){el.textContent=w[0];return}
+ let i=0,j=0,del=false;(function tick(){const t=w[i];el.textContent=t.slice(0,j);
+ if(!del&&j===t.length){del=true;return setTimeout(tick,1500)}
+ if(del&&j===0){del=false;i=(i+1)%w.length}
+ j+=del?-1:1;setTimeout(tick,del?35:70)})()})();
+/* scroll: progress, nav, top button, active link, reveal, count-up */
+const secs=[...document.querySelectorAll("section")],links_=[...document.querySelectorAll("nav ul a")];
+addEventListener("scroll",()=>{const h=document.documentElement,y=scrollY;
+ $("progress").style.width=(y/(h.scrollHeight-innerHeight)*100)+"%";
+ $("nav").classList.toggle("scrolled",y>30);$("top").classList.toggle("on",y>600);
+ let cur="";secs.forEach(s=>{if(y>=s.offsetTop-160)cur=s.id});links_.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+cur))},{passive:true});
+$("top").onclick=()=>scrollTo({top:0,behavior:"smooth"});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+const observeAll=()=>document.querySelectorAll(".reveal:not(.in)").forEach(el=>io.observe(el));observeAll();
+const tools=new Set(PROJECTS.flatMap(p=>p.tools));
+const targets={s1:PROJECTS.length,s2:tools.size,s3:EXPERIENCE.length};
+function count(){Object.entries(targets).forEach(([id,to])=>{const el=$(id);let n=0;const step=()=>{n++;el.textContent=n;if(n<to)setTimeout(step,reduce?0:140)};if(to)step();else el.textContent=0})}
+new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){count();o.disconnect()}},{threshold:.4}).observe($("s1"));
+/* 3D tilt on screenshots */
+document.addEventListener("mousemove",e=>{if(reduce)return;const f=e.target.closest&&e.target.closest(".frame");
+ document.querySelectorAll(".frame").forEach(x=>{if(x!==f)x.style.transform=""});
+ if(!f)return;const r=f.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+ f.style.transform=`rotateY(${px*7}deg) rotateX(${-py*7}deg) translateY(-4px)`});
+/* lightbox with prev/next */
+const lb=$("lb"),lbi=lb.querySelector("img");let cur=0;
+const show=n=>{cur=(n+frames.length)%frames.length;lbi.src=frames[cur]};
+document.addEventListener("click",e=>{const f=e.target.closest(".frame");
+ if(f){show(frames.indexOf(f.querySelector("img").src));lb.classList.add("on");return}
+ if(!lb.classList.contains("on"))return;
+ if(e.target.matches(".prev")){e.stopPropagation();show(cur-1)}else if(e.target.matches(".next")){e.stopPropagation();show(cur+1)}else lb.classList.remove("on")});
+document.addEventListener("keydown",e=>{if(!lb.classList.contains("on"))return;if(e.key==="Escape")lb.classList.remove("on");if(e.key==="ArrowRight")show(cur+1);if(e.key==="ArrowLeft")show(cur-1)});
+/* hero particle network */
+(function(){if(reduce)return;const c=$("net"),x=c.getContext("2d");let W,H,P=[];
+ const size=()=>{W=c.width=c.offsetWidth;H=c.height=c.offsetHeight;P=Array.from({length:Math.min(70,Math.floor(W/18))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}))};size();addEventListener("resize",size);
+ let mx=-999,my=-999;c.parentElement.addEventListener("mousemove",e=>{const r=c.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
+ (function loop(){x.clearRect(0,0,W,H);const col=root.dataset.theme==="dark"?"120,220,255":"40,90,160";
+  P.forEach((p,i)=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+   x.fillStyle=`rgba(${col},.7)`;x.beginPath();x.arc(p.x,p.y,1.8,0,6.3);x.fill();
+   for(let j=i+1;j<P.length;j++){const q=P[j],d=Math.hypot(p.x-q.x,p.y-q.y);if(d<120){x.strokeStyle=`rgba(${col},${.22*(1-d/120)})`;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke()}}
+   const dm=Math.hypot(p.x-mx,p.y-my);if(dm<150){x.strokeStyle=`rgba(34,211,166,${.5*(1-dm/150)})`;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(mx,my);x.stroke()}});
+  requestAnimationFrame(loop)})()})();
+</script></body></html>
