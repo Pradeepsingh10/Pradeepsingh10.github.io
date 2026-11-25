@@ -11,7 +11,7 @@
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
 
 <nav id="nav"><div class="wrap"><a class="logo" href="#home" id="logo"></a>
-<ul><li><a href="#about">About</a></li><li><a href="#skills-sec">Skills</a></li><li><a href="#projects">Projects</a></li><li><a href="#experience">Experience</a></li><li><a href="#education">Education</a></li><li><a href="trading.html">Trading</a></li><li><a href="#contact">Contact</a></li><li><button id="theme" title="Toggle theme">☀</button></li></ul></div></nav>
+<ul><li><a href="#about">About</a></li><li><a href="#skills-sec">Skills</a></li><li><a href="#projects">Projects</a></li><li><a href="#experience">Experience</a></li><li><a href="#education">Education</a></li><li><a href="trading.html">Trading</a></li><li><a href="#contact">Contact</a></li></ul><div class="navr"><button id="theme" title="Toggle theme">☀</button><button id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button></div></div></nav>
 
 <header class="hero" id="home"><canvas id="net"></canvas>
 <div class="wrap">
@@ -59,6 +59,10 @@
 <script>
 const $=id=>document.getElementById(id), esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* mobile menu */
+const navEl=$("nav"),bg=$("burger");
+bg.onclick=()=>{const o=navEl.classList.toggle("open");bg.setAttribute("aria-expanded",o)};
+navEl.querySelectorAll("ul a").forEach(a=>a.addEventListener("click",()=>{navEl.classList.remove("open");bg.setAttribute("aria-expanded","false")}));
 /* theme */
 const root=document.documentElement;
 try{const t=localStorage.getItem("theme");if(t)root.dataset.theme=t}catch(e){}

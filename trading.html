@@ -9,7 +9,7 @@
 </head><body>
 <div id="progress"></div>
 <nav id="nav"><div class="wrap"><a class="logo" href="index.html" id="logo"></a>
-<ul><li><a href="index.html">← Portfolio</a></li><li><a href="#automation">Automation</a></li><li><a href="#about">About</a></li><li><a href="#certs">Certificates</a></li><li><a href="#connect">Connect</a></li></ul></div></nav>
+<ul><li><a href="index.html">← Portfolio</a></li><li><a href="#automation">Automation</a></li><li><a href="#about">About</a></li><li><a href="#certs">Certificates</a></li><li><a href="#connect">Connect</a></li></ul><button id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button></div></nav>
 
 <header class="hero"><canvas id="chart"></canvas>
 <div class="wrap">
@@ -56,6 +56,10 @@ $("auto").innerHTML=`<span class="badge"><i></i>${escH(A.status.toUpperCase())}<
 $("aboutme").innerHTML=aboutHTML();
 $("soc").innerHTML=socialHTML();
 $("cgrid").innerHTML=TRADING.certificates.map((c,i)=>`<div class="cert reveal" data-i="${i}"><img src="${escH(c.image)}" alt="${escH(c.title)}" loading="lazy"><h3>${escH(c.title)}</h3><div class="m">${escH(c.meta||"")}</div></div>`).join("");
+/* mobile menu */
+const navEl=$("nav"),bg=$("burger");
+bg.onclick=()=>{const o=navEl.classList.toggle("open");bg.setAttribute("aria-expanded",o)};
+navEl.querySelectorAll("ul a").forEach(a=>a.addEventListener("click",()=>{navEl.classList.remove("open");bg.setAttribute("aria-expanded","false")}));
 /* scroll */
 addEventListener("scroll",()=>{const h=document.documentElement;$("progress").style.width=(scrollY/(h.scrollHeight-innerHeight)*100)+"%";$("nav").classList.toggle("scrolled",scrollY>30)},{passive:true});
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
