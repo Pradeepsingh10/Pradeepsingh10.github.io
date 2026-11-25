@@ -117,3 +117,14 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 0;border
 #lb .prev{left:18px}#lb .next{right:18px}
 @media(max-width:820px){nav ul li:not(:last-child){display:none}.about-grid,.proj,.proj:nth-child(even){grid-template-columns:1fr}.proj:nth-child(even) .shots{order:0}.body{padding:24px}section{padding:72px 0}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+.socials{display:inline-flex;gap:12px;align-items:center;margin-left:4px;flex-wrap:wrap}
+.ico{width:48px;height:48px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;transition:transform .25s,box-shadow .25s,background .25s,color .25s}
+.ico:hover{transform:translateY(-4px) scale(1.08);background:var(--grad);color:#04101a;border-color:transparent;box-shadow:0 12px 30px rgba(56,189,248,.35)}
+.aboutme{max-width:760px;margin:0 auto;text-align:center}
+.aboutme .ph{width:190px;height:190px;border-radius:50%;object-fit:cover;object-position:50% 20%;border:3px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,var(--grad) border-box;box-shadow:0 20px 50px rgba(34,211,166,.18);margin-bottom:26px;transition:transform .4s}
+.aboutme .ph:hover{transform:scale(1.04) rotate(-1.5deg)}
+.atxt{text-align:left;font-size:17px;color:var(--muted)}
+.atxt p{margin:0 0 18px}
+.atxt h3{font-size:18px;margin:26px 0 6px;font-family:"Space Grotesk",sans-serif}
+.atxt .gh{color:#22c55e}.atxt .rh{color:#ef4444}

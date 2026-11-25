@@ -11,7 +11,7 @@
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
 
 <nav id="nav"><div class="wrap"><a class="logo" href="#home" id="logo"></a>
-<ul><li><a href="#about">About</a></li><li><a href="#projects">Projects</a></li><li><a href="#experience">Experience</a></li><li><a href="#education">Education</a></li><li><a href="#contact">Contact</a></li><li><button id="theme" title="Toggle theme">☀</button></li></ul></div></nav>
+<ul><li><a href="#about">About</a></li><li><a href="#skills-sec">Skills</a></li><li><a href="#projects">Projects</a></li><li><a href="#experience">Experience</a></li><li><a href="#education">Education</a></li><li><a href="trading.html">Trading</a></li><li><a href="#contact">Contact</a></li><li><button id="theme" title="Toggle theme">☀</button></li></ul></div></nav>
 
 <header class="hero" id="home"><canvas id="net"></canvas>
 <div class="wrap">
@@ -23,12 +23,13 @@
 </div><div class="scroll"></div></header>
 
 <section id="about"><div class="wrap">
- <div class="eyebrow reveal">About me</div><h2 class="reveal">Turning raw data into decisions</h2>
- <div class="about-grid">
-  <p class="about-text reveal" id="about-text"></p>
-  <div class="stats reveal"><div class="stat"><b data-to="0" id="s1">0</b><span>PROJECTS</span></div><div class="stat"><b id="s2">0</b><span>TOOLS</span></div><div class="stat"><b id="s3">0</b><span>EXPERIENCES</span></div></div>
- </div>
- <div class="skills" id="skills"></div>
+ <div class="eyebrow reveal" style="text-align:center">About</div><h2 class="reveal" style="text-align:center">About Me</h2>
+ <div id="aboutme"></div>
+</div></section>
+
+<section id="skills-sec"><div class="wrap">
+ <div class="eyebrow reveal">Skills</div><h2 class="reveal">What I work with</h2>
+ <div class="skills" id="skills" style="margin-top:0"></div>
 </div></section>
 
 <section id="projects"><div class="wrap">
@@ -54,7 +55,7 @@
 <button id="top" title="Back to top">↑</button>
 <div id="lb"><button class="prev">‹</button><img alt=""><button class="next">›</button></div>
 
-<script src="projects.js"></script>
+<script src="projects.js"></script><script src="common.js"></script>
 <script>
 const $=id=>document.getElementById(id), esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -66,13 +67,12 @@ $("theme").onclick=()=>{root.dataset.theme=root.dataset.theme==="dark"?"light":"
 /* content */
 document.title=PROFILE.name+" | Portfolio";
 const parts=PROFILE.name.split(" ");$("logo").innerHTML=esc(parts[0])+" <span>"+esc(parts.slice(1).join(" "))+"</span>";
-$("hname").textContent=PROFILE.name;$("hline").textContent=PROFILE.headline;$("about-text").textContent=PROFILE.about;
+$("hname").textContent=PROFILE.name;$("hline").textContent=PROFILE.headline;$("aboutme").innerHTML=aboutHTML();
 $("foot").textContent="© "+new Date().getFullYear()+" "+PROFILE.name+" · Built with HTML, CSS and JavaScript";
 $("mail").textContent=PROFILE.email;$("mail").href="mailto:"+PROFILE.email;
 function links(primary){let h=primary?'<a class="btn primary" href="#projects">View Projects →</a>':'<a class="btn primary" href="mailto:'+esc(PROFILE.email)+'">Say Hello ✉</a>';
  if(PROFILE.resume)h+=`<a class="btn" href="${esc(PROFILE.resume)}" download>Download Resume ⬇</a>`;
- if(PROFILE.github)h+=`<a class="btn" href="${esc(PROFILE.github)}" target="_blank" rel="noopener">GitHub ↗</a>`;
- if(PROFILE.linkedin)h+=`<a class="btn" href="${esc(PROFILE.linkedin)}" target="_blank" rel="noopener">LinkedIn ↗</a>`;return h}
+ return h+'<span class="socials">'+socialHTML()+'</span>'}
 $("hbtns").innerHTML=links(true);$("cbtns").innerHTML=links(false);
 $("skills").innerHTML=SKILLS.map(g=>`<div class="card reveal"><h3>${esc(g.group)}</h3><div class="chips">${g.items.map(i=>`<span class="chip">${esc(i)}</span>`).join("")}</div></div>`).join("");
 const frames=[];
@@ -109,10 +109,6 @@ addEventListener("scroll",()=>{const h=document.documentElement,y=scrollY;
 $("top").onclick=()=>scrollTo({top:0,behavior:"smooth"});
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
 const observeAll=()=>document.querySelectorAll(".reveal:not(.in)").forEach(el=>io.observe(el));observeAll();
-const tools=new Set(PROJECTS.flatMap(p=>p.tools));
-const targets={s1:PROJECTS.length,s2:tools.size,s3:EXPERIENCE.length};
-function count(){Object.entries(targets).forEach(([id,to])=>{const el=$(id);let n=0;const step=()=>{n++;el.textContent=n;if(n<to)setTimeout(step,reduce?0:140)};if(to)step();else el.textContent=0})}
-new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){count();o.disconnect()}},{threshold:.4}).observe($("s1"));
 /* 3D tilt on screenshots */
 document.addEventListener("mousemove",e=>{if(reduce)return;const f=e.target.closest&&e.target.closest(".frame");
  document.querySelectorAll(".frame").forEach(x=>{if(x!==f)x.style.transform=""});

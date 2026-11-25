@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trading | Pradeep Singh</title>
+<meta name="description" content="Trading experience, certifications and strategy automation by Pradeep Singh.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="trading.css">
+</head><body>
+<div id="progress"></div>
+<nav id="nav"><div class="wrap"><a class="logo" href="index.html" id="logo"></a>
+<ul><li><a href="index.html">← Portfolio</a></li><li><a href="#automation">Automation</a></li><li><a href="#about">About</a></li><li><a href="#certs">Certificates</a></li><li><a href="#connect">Connect</a></li></ul></div></nav>
+
+<header class="hero"><canvas id="chart"></canvas>
+<div class="wrap">
+ <div class="live"><span class="dot"></span> Trading &amp; Markets</div>
+ <h1>Trading <span class="up">&amp;</span><br>Markets</h1>
+ <div class="yrs"><b id="yrs"></b> years in the markets</div>
+ <div class="founder" id="founder"></div>
+ <p id="intro"></p>
+</div></header>
+
+<section id="automation" style="padding-top:30px"><div class="wrap">
+ <div class="eyebrow reveal">Automation</div><h2 class="reveal">What I'm building</h2>
+ <div class="auto reveal" id="auto"></div>
+</div></section>
+
+<section id="about"><div class="wrap">
+ <div class="eyebrow reveal" style="text-align:center">About</div><h2 class="reveal" style="text-align:center">About Me</h2>
+ <div id="aboutme"></div>
+</div></section>
+
+<section id="certs"><div class="wrap">
+ <div class="eyebrow reveal">Credentials</div><h2 class="reveal">Certifications</h2>
+ <div class="cgrid" id="cgrid"></div>
+</div></section>
+
+<section id="connect" class="connect"><div class="wrap">
+ <div class="eyebrow reveal">Connect</div><h2 class="reveal">Find me online</h2>
+ <div class="socials reveal" id="soc"></div>
+ <div class="disc reveal"><b>Disclaimer:</b> This page is for educational and informational purposes only. It is not investment advice or a recommendation to buy or sell any security or instrument. Trading involves risk, and past performance does not guarantee future results.</div>
+</div></section>
+
+<footer id="foot"></footer>
+<div id="lb"><button class="prev">‹</button><img alt=""><button class="next">›</button></div>
+
+<script src="projects.js"></script><script src="common.js"></script><script src="trading-data.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const pr=PROFILE.name.split(" ");$("logo").innerHTML=escH(pr[0])+" <span>"+escH(pr.slice(1).join(" "))+"</span>";
+$("foot").textContent="© "+new Date().getFullYear()+" "+PROFILE.name;
+$("yrs").textContent=TRADING.years;$("founder").textContent=TRADING.founder;$("intro").textContent=TRADING.intro;
+const A=TRADING.automation;
+$("auto").innerHTML=`<span class="badge"><i></i>${escH(A.status.toUpperCase())}</span><h3>${escH(A.title)}</h3><p>${escH(A.summary)}</p><div class="shimmer"></div>`;
+$("aboutme").innerHTML=aboutHTML();
+$("soc").innerHTML=socialHTML();
+$("cgrid").innerHTML=TRADING.certificates.map((c,i)=>`<div class="cert reveal" data-i="${i}"><img src="${escH(c.image)}" alt="${escH(c.title)}" loading="lazy"><h3>${escH(c.title)}</h3><div class="m">${escH(c.meta||"")}</div></div>`).join("");
+/* scroll */
+addEventListener("scroll",()=>{const h=document.documentElement;$("progress").style.width=(scrollY/(h.scrollHeight-innerHeight)*100)+"%";$("nav").classList.toggle("scrolled",scrollY>30)},{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+/* lightbox */
+const lb=$("lb"),lbi=lb.querySelector("img");let cur=0;const imgs=TRADING.certificates.map(c=>c.image);
+const show=n=>{cur=(n+imgs.length)%imgs.length;lbi.src=imgs[cur]};
+document.addEventListener("click",e=>{const c=e.target.closest(".cert");
+ if(c){show(+c.dataset.i);lb.classList.add("on");return}
+ if(!lb.classList.contains("on"))return;
+ if(e.target.matches(".prev")){e.stopPropagation();show(cur-1)}else if(e.target.matches(".next")){e.stopPropagation();show(cur+1)}else lb.classList.remove("on")});
+document.addEventListener("keydown",e=>{if(!lb.classList.contains("on"))return;if(e.key==="Escape")lb.classList.remove("on");if(e.key==="ArrowRight")show(cur+1);if(e.key==="ArrowLeft")show(cur-1)});
+/* live candlestick chart background (decorative, random data) */
+(function(){const cv=$("chart"),x=cv.getContext("2d");let W,H,C=[],step=16,off=0,mx=-999,my=-999,last=0,lastT=0;
+ const dpr=Math.min(devicePixelRatio||1,2);
+ function size(){W=cv.offsetWidth;H=cv.offsetHeight;cv.width=W*dpr;cv.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);init()}
+ function rnd(p){const o=p,c=o+(Math.random()-.48)*5,h=Math.max(o,c)+Math.random()*3,l=Math.min(o,c)-Math.random()*3;return{o,c,h,l}}
+ function init(){C=[];let p=100;const n=Math.ceil(W/step)+3;for(let i=0;i<n;i++){const k=rnd(p);C.push(k);p=k.c}}
+ size();addEventListener("resize",size);
+ const hero=cv.parentElement;
+ const mv=e=>{const r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top};
+ hero.addEventListener("pointermove",mv);hero.addEventListener("pointerdown",mv);hero.addEventListener("pointerleave",()=>{mx=my=-999});
+ function draw(t){
+  x.clearRect(0,0,W,H);
+  if(!reduce&&t-lastT>1100){lastT=t;const p=C[C.length-1].c;C.push(rnd(p));C.shift();off=0}
+  if(!reduce){off=Math.min(step,(t-lastT)/1100*step);const f=C[C.length-1];f.c+=(Math.random()-.5)*.6;f.h=Math.max(f.h,f.c);f.l=Math.min(f.l,f.c)}
+  let mn=1e9,mxp=-1e9;C.forEach(k=>{mn=Math.min(mn,k.l);mxp=Math.max(mxp,k.h)});
+  const top=H*.14,bot=H*.9,sc=(bot-top)/(mxp-mn||1),Y=v=>bot-(v-mn)*sc;
+  x.strokeStyle="rgba(255,255,255,.04)";x.lineWidth=1;for(let i=1;i<6;i++){const y=H*i/6;x.beginPath();x.moveTo(0,y);x.lineTo(W,y);x.stroke()}
+  C.forEach((k,i)=>{const cx=i*step-off+step/2,up=k.c>=k.o,d=Math.hypot(cx-mx,(Y((k.o+k.c)/2))-my),near=mx>-900&&d<130,boost=near?1-d/130:0;
+   const col=up?"34,197,94":"239,68,68";x.strokeStyle=`rgba(${col},${.28+boost*.65})`;x.fillStyle=`rgba(${col},${.22+boost*.7})`;
+   if(near){x.shadowColor=`rgba(${col},.9)`;x.shadowBlur=18*boost}else x.shadowBlur=0;
+   x.lineWidth=1.5;x.beginPath();x.moveTo(cx,Y(k.h));x.lineTo(cx,Y(k.l));x.stroke();
+   const y1=Y(Math.max(k.o,k.c)),hh=Math.max(2,Math.abs(Y(k.o)-Y(k.c)));x.fillRect(cx-4,y1,8,hh);x.shadowBlur=0});
+  if(mx>-900){x.setLineDash([4,5]);x.strokeStyle="rgba(255,255,255,.22)";x.beginPath();x.moveTo(mx,0);x.lineTo(mx,H);x.moveTo(0,my);x.lineTo(W,my);x.stroke();x.setLineDash([])}
+  if(!reduce)requestAnimationFrame(draw)}
+ requestAnimationFrame(draw);if(reduce)draw(0);
+})();
+</script></body></html>

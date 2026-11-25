@@ -9,11 +9,18 @@ const PROFILE = {
   headline: "Computer Science graduate focused on data engineering and analytics.",
   roles: ["Data Engineering", "Python & SQL Pipelines", "Power BI Dashboards", "Data Analytics"],   // typing animation in the hero
   about: "I build data pipelines and dashboards. During my internship at Jindal Steel & Power Ltd., I independently built a real-time pipeline that turns email alerts into structured SQL data and Power BI dashboards. I work with Python, SQL and Power BI, and I like taking a problem from raw data to a decision-ready report.",
+  aboutMe: {
+    photo: "images/pradeep.jpg",
+    intro: "I'm Pradeep Singh, a Computer Science graduate from India. I work with Python, SQL and Power BI, building data pipelines and dashboards. I also work on automation, including automating trading strategies with Python and APIs.",
+    strengths: "Always positive thinking towards my work, discipline and quick learner.",
+    weakness: "I tend to get deeply immersed in my work, to the point where I lose track of time and meals."
+  },
   email: "pradeepsingh0369@gmail.com",
   location: "Raigarh, Chhattisgarh, India",
   // Leave a link empty ("") to hide it. Add yours when ready.
-  github: "",
-  linkedin: "",
+  github: "https://github.com/Pradeepsingh10",
+  linkedin: "https://www.linkedin.com/in/pradeep-singh-bb02733b5/",
+  x: "https://x.com/_pradeep109",
   resume: ""            // e.g. "Pradeep_Singh_Resume_DE.pdf" (put the PDF next to index.html)
 };
 
@@ -74,6 +81,9 @@ const PROJECTS = [
 ];
 
 const EXPERIENCE = [
+  { role: "Co-Founder", org: "LimeLabs", period: "July 2026 – October 2026",
+    points: ["Co-founded a software company with friends, building and delivering custom software for small shops and small businesses.",
+             "Closed in October 2026 as client demand declined and the market shifted toward AI-driven solutions."] },
   { role: "Data Engineering Intern", org: "Jindal Steel & Power Ltd.", period: "June 2025 – September 2025",
     points: ["Designed and built an end-to-end Python data pipeline: IMAP ingestion, regex parsing and SQL storage.",
              "Built Power BI dashboards on top of the SQL data to visualize device and IP downtime.",
